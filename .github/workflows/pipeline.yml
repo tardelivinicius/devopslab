@@ -1,8 +1,7 @@
-# Nome do Workflow
 name: DevOpsLab Pipeline
 
 # Evento que irá acionar a pipeline
-on: 
+on:
   push:
     branches:
       - main
@@ -21,6 +20,21 @@ jobs:
 
       - name: Install Requirements
         run:  pip install flask
-              
+
       - name: Unit Test
         run: python -m unittest -v test
+
+      - name: Login no Artifact Registry
+        uses: docker/login-action@v3      # https://github.com/marketplace/actions/docker-login#google-artifact-registry-gar
+        with:
+          registry: '${{ vars.GOOGLE_ARTIFACT }}'
+          username: _json_key
+          password: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+      - name: Build Image
+        run: |
+          docker build -t ${{ vars.GOOGLE_ARTIFACT }}/${{ vars.GOOGLE_PROJECT_ID }}/${{ vars.GOOGLE_REPONAME }}/${{ vars.GOOGLE_MYAPP }}:latest .
+
+      - name: Push Image
+        run: |
+          docker push ${{ vars.GOOGLE_ARTIFACT }}/${{ vars.GOOGLE_PROJECT_ID }}/${{ vars.GOOGLE_REPONAME }}/${{ vars.GOOGLE_MYAPP }}:latest
