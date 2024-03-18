@@ -42,47 +42,18 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
 
-  unit-test:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-      
-    - run: mvn test  
-    - name: Generate JaCoCo Badge
-      id: jacoco
-      uses: cicirello/jacoco-badge-generator@v2.11.0
-    - name: Log coverage percentage
-      run: |
-        echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
-        echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"    
-    - name: Upload JaCoCo coverage report
-      uses: actions/upload-artifact@v2
-      with:
-        name: jacoco-report
-        path: target/site/jacoco/
-
   code-analisys:
     runs-on: ubuntu-latest
-    needs: unit-test
-    
+
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
-        
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
+    - name: Set up Python 3.10
+    - uses: actions/setup-python@v5
+    with:
+      python-version: '3.10' 
+  
   Build:
     runs-on: ubuntu-latest
     needs: code-analisys
@@ -129,6 +100,19 @@ jobs:
       - name: Push Image
         run: |
           docker push ${{ vars.GOOGLE_ARTIFACT }}/${{ vars.GOOGLE_PROJECT_ID }}/${{ vars.GOOGLE_REPONAME }}/${{ vars.GOOGLE_MYAPP }}:latest
+
+  deploy-STG:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: stg
+    
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Deploy 
+        shell: bash
+        run: |
+          echo "Deploy STG"
 
   Deploy:
     needs: Build
