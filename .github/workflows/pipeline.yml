@@ -44,29 +44,29 @@ jobs:
 
   unit-test:
     runs-on: ubuntu-latest
-      steps:
-        - name: Unit Test
-          run: python -m unittest -v test
+    steps:
+      - name: Unit Test
+        run: python -m unittest -v test
 
   code-analisys:
     runs-on: ubuntu-latest
     nees: unit-test
     steps:
-        - name: Download do Repositório
-        uses: actions/checkout@v4       # https://github.com/actions/checkout
-        with:
-          # Você está solicitando que nenhum histórico seja baixado além do commit mais recente.
-          fetch-depth: 0
+      - name: Download do Repositório
+      uses: actions/checkout@v4       # https://github.com/actions/checkout
+      with:
+        # Você está solicitando que nenhum histórico seja baixado além do commit mais recente.
+        fetch-depth: 0
     
-        - name: Setup Python
-        uses: actions/setup-python@v5   # https://github.com/actions/setup-python
-        with:
-          python-version: '3.10'
+      - name: Setup Python
+      uses: actions/setup-python@v5   # https://github.com/actions/setup-python
+      with:
+        python-version: '3.10'
 
-        - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master  #https://github.com/marketplace/actions/sonarcloud-scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master  #https://github.com/marketplace/actions/sonarcloud-scan
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Build:
     runs-on: ubuntu-latest
