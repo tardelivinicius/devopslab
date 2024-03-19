@@ -50,7 +50,7 @@ jobs:
 
   code-analisys:
     runs-on: ubuntu-latest
-    nees: unit-test
+    needs: unit-test
     steps:
       - name: Download do Repositório
       uses: actions/checkout@v4       # https://github.com/actions/checkout
