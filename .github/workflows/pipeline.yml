@@ -30,7 +30,6 @@ jobs:
 
   CodeQL:
     name: CodeQL
-    needs: SAST
     runs-on: ubuntu-latest
     permissions:
       actions: read
