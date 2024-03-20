@@ -137,7 +137,6 @@ jobs:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
       - name: Set Output URL
-        id: deploy
         run: echo "::set-output name=url::${{ steps.deploy.outputs.url }}"
 
 
@@ -158,6 +157,7 @@ jobs:
           cmd_options: '-a'
   
   Security (SAST):
+   needs: Dast
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
