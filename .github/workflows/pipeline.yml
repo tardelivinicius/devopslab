@@ -30,7 +30,7 @@ jobs:
 
   Analyze-CodeQL:
     name: CodeQL
-    needs: code-analisys
+    needs: Code-analisys-SONAR
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -154,7 +154,7 @@ jobs:
           cmd_options: '-a'
   
   Security-SAST:
-    needs: Dast
+    needs: DAST
     runs-on: ubuntu-latest
     permissions:
       contents: read
