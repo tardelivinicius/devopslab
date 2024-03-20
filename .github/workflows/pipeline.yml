@@ -136,9 +136,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-    - name: Set Output URL
-      id: deploy
-      run: echo "::set-output name=url::${{ steps.deploy.outputs.url }}"
+      - name: Set Output URL
+        id: deploy
+        run: echo "::set-output name=url::${{ steps.deploy.outputs.url }}"
 
 
   Dast:
