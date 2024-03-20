@@ -156,7 +156,7 @@ jobs:
           target: "${{ needs.Deploy.outputs.url }}"
           cmd_options: '-a'
   
-  Security SAST:
+  Security-SAST:
     needs: Dast
     runs-on: ubuntu-latest
     permissions:
