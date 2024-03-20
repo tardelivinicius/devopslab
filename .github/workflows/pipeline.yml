@@ -157,8 +157,12 @@ jobs:
           cmd_options: '-a'
   
   Security (SAST):
-   needs: Dast
+    needs: Dast
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
